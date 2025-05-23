@@ -111,7 +111,6 @@ if (isset($_GET['eliminar_cuenta'])) {
     <link rel="stylesheet" href="../assets/css/dashboard.css">
 </head>
 <body>
-
     <!-- HEADER -->
     <header>
         <div class="logo">
@@ -129,17 +128,10 @@ if (isset($_GET['eliminar_cuenta'])) {
                         Borrar Datos
                     </button>
                 </form>
+                </div> 
             </div>
-            
         </div>
-</div>
     </header>
-
-    <?php
-        $exePath = realpath(__DIR__ . '/../C++/mensajes.exe');
-        $mensaje = shell_exec("\"$exePath\" 2>&1");
-        echo "<strong>" . htmlspecialchars($mensaje) . "</strong></p>";
-    ?>
     <!-- CONTENEDOR PRINCIPAL -->
     <div class="container">
 
@@ -201,5 +193,11 @@ if (isset($_GET['eliminar_cuenta'])) {
             <?php include __DIR__ . '/../componentes/modal_movimientos_mes.php'; ?>
         </div>
     </div>
+
+    <?php
+        $exePath = realpath(__DIR__ . '/../C++/mensajes.exe');
+        $mensaje = shell_exec("\"$exePath\" 2>&1");
+        echo '<p style="text-align:center; margin-top:10px;"><strong>' . htmlspecialchars($mensaje) . '</strong></p>';
+    ?>
 </body>
 </html>
