@@ -278,6 +278,150 @@ header {
     overflow: visible;
 }
 
+.cuentas-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.cuenta-card {
+    background-color: #f0f4f8; /* azul muy suave */
+    color: #2c3e50;           /* texto oscuro */
+    border-radius: 10px;
+    padding: 12px 18px;
+    min-width: 140px;
+    max-width: 180px;
+    box-shadow: 0 1px 5px rgba(44, 62, 80, 0.1);
+    text-align: center;
+    cursor: default;
+    transition: box-shadow 0.2s ease;
+}
+
+.cuenta-card:hover {
+    box-shadow: 0 6px 20px rgba(44, 62, 80, 0.15);
+}
+
+.cuenta-card h5 {
+    margin-bottom: 6px;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.cuenta-card p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.movimientos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.movimiento-card {
+    background-color: #fafafa;
+    border-radius: 10px;
+    padding: 12px 18px;
+    box-shadow: 0 1px 5px rgba(44, 62, 80, 0.08);
+    display: grid;
+    grid-template-columns: 100px 1fr 90px;
+    grid-template-rows: auto auto;
+    gap: 4px 12px;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    cursor: default;
+    transition: box-shadow 0.2s ease;
+}
+
+.movimiento-card:hover {
+    box-shadow: 0 6px 20px rgba(44, 62, 80, 0.15);
+}
+
+.mov-fecha {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    font-weight: 600;
+    color: #3ccf71;
+}
+
+.mov-detalle {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    font-weight: 500;
+}
+
+.mov-monto {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+    font-weight: 700;
+    text-align: right;
+    color: #2c3e50;
+}
+
+.mov-desc {
+    grid-column: 2 / 4;
+    grid-row: 2 / 3;
+    font-style: italic;
+    color: #777;
+}
+
+.mov-ingreso {
+    border-left: 4px solid #2ecc71; /* verde para ingreso */
+}
+
+.mov-egreso {
+    border-left: 4px solid #e74c3c; /* rojo para egreso */
+}
+
+.cuentas-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.cuenta-card {
+    position: relative;
+    background-color: #fff;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    min-width: 150px;
+    flex: 1 1 150px;
+}
+
+.cuenta-card h5 {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.cuenta-card p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #3ccf71;
+}
+
+.btn-eliminar {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: #e74c3c;
+    font-weight: bold;
+    font-size: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+.btn-eliminar:hover {
+    color: #c0392b;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .container {

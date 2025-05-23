@@ -45,13 +45,13 @@ foreach (['ingreso', 'egreso'] as $tipo) {
     $categorias[$tipo] = $stmt->fetchAll();
 }
 
-// Obtener últimos 5 movimientos
+// Obtener últimos 5 movimientos ordenados por ID descendente
 $stmt = $pdo->prepare("
     SELECT m.tipo, m.monto, m.descripcion, m.fecha, c.nombre AS cuenta
     FROM movimientos m
     JOIN cuentas c ON m.id_cuenta = c.id
     WHERE m.id_usuario = ?
-    ORDER BY m.fecha DESC
+    ORDER BY m.id DESC
     LIMIT 5
 ");
 $stmt->execute([$id_usuario]);
@@ -70,6 +70,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['borrar_cuenta'])) {
     $pdo->prepare("DELETE FROM cuentas WHERE id_usuario = ?")->execute([$id_usuario]);
     // Eliminar metas de ahorro
     $pdo->prepare("DELETE FROM metas_ahorro WHERE id_usuario = ?")->execute([$id_usuario]);
+
+    header("Location: dashboard.php");
+    exit;
+}
+
+if (isset($_GET['eliminar_cuenta'])) {
+    $id_cuenta = intval($_GET['eliminar_cuenta']);
+    $id_usuario = $_SESSION['user_id'];
+
+    // Verificar si hay movimientos asociados a esta cuenta
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM movimientos WHERE id_cuenta = ? AND id_usuario = ?");
+    $stmt->execute([$id_cuenta, $id_usuario]);
+    $movimientosCount = $stmt->fetchColumn();
+
+    if ($movimientosCount == 0) {
+        // No tiene movimientos, borrar cuenta físicamente
+        $stmt = $pdo->prepare("DELETE FROM cuentas WHERE id = ? AND id_usuario = ?");
+        $stmt->execute([$id_cuenta, $id_usuario]);
+        $mensaje = "Cuenta eliminada correctamente.";
+    } else {
+        // Tiene movimientos, solo desactivar la cuenta
+        $stmt = $pdo->prepare("UPDATE cuentas SET activo = 0 WHERE id = ? AND id_usuario = ?");
+        $stmt->execute([$id_cuenta, $id_usuario]);
+        $mensaje = "Cuenta desactivada porque tiene movimientos asociados.";
+    }
+
+    header("Location: dashboard.php");
+    exit;
 }
 
 ?>
@@ -107,6 +135,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['borrar_cuenta'])) {
 </div>
     </header>
 
+    <?php
+        $exePath = realpath(__DIR__ . '/../C++/mensajes.exe');
+        $mensaje = shell_exec("\"$exePath\" 2>&1");
+        echo "<strong>" . htmlspecialchars($mensaje) . "</strong></p>";
+    ?>
     <!-- CONTENEDOR PRINCIPAL -->
     <div class="container">
 
@@ -117,50 +150,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['borrar_cuenta'])) {
             <p><strong>Total ingresos:</strong> $<?= number_format($totalIngresos, 2, ',', '.') ?></p>
             <p><strong>Total egresos:</strong> $<?= number_format($totalEgresos, 2, ',', '.') ?></p>
             <p><strong>Porcentaje Gastado:</strong> <?= $porcentajeGasto ?>%</p>
+            <?php include __DIR__ . '/../componentes/formulario_categoria.php'; ?>
         </div>
 
         <!-- Tarjeta de cuentas -->
         <div class="card">
-            <h4>Tus cuentas:</h4>
-            <ul>
+            <h4>Tus cuentas:</h4><br>
+            <div class="cuentas-container">
                 <?php foreach ($cuentas as $cuenta): ?>
-                    <li><?= htmlspecialchars($cuenta['nombre']) ?>: $<?= number_format($cuenta['saldo_actual'], 2, ',', '.') ?></li>
+                    <div class="cuenta-card">
+                        <h5><?= htmlspecialchars($cuenta['nombre']) ?></h5>
+                        <p>$<?= number_format($cuenta['saldo_actual'], 2, ',', '.') ?></p>
+                        <a href="?eliminar_cuenta=<?= $cuenta['id'] ?>"
+                            class="btn-eliminar"
+                            onclick="return confirm('¿Eliminar esta cuenta? Esta acción no se puede deshacer.')"
+                            title="Eliminar cuenta">&minus;</a>
+                    </div>
                 <?php endforeach; ?>
-            </ul>
+            </div><br>
+            <?php include __DIR__ . '/../componentes/formulario_cuenta.php'; ?>
         </div>
 
         <!-- Tarjeta de movimientos -->
         <div class="card">
-            <h4>Últimos movimientos:</h4>
-            <ul>
+            <h4>Últimos movimientos:</h4><br>
+            <div class="movimientos-container">
                 <?php foreach ($movimientos as $mov): ?>
                     <?php
                         $fechaFormateada = date('d/m/Y', strtotime($mov['fecha']));
                         $descripcion = trim($mov['descripcion']);
+                        $tipoClase = $mov['tipo'] === 'ingreso' ? 'mov-ingreso' : 'mov-egreso';
                     ?>
-                    <li>
-                        <?= $fechaFormateada ?> - <?= ucfirst($mov['tipo']) ?> en <?= htmlspecialchars($mov['cuenta']) ?>: $<?= number_format($mov['monto'], 2, ',', '.') ?>
-                        <?= $descripcion !== '' ? '(' . htmlspecialchars($descripcion) . ')' : '' ?>
-                    </li>
+                    <div class="movimiento-card <?= $tipoClase ?>">
+                        <div class="mov-fecha"><?= $fechaFormateada ?></div>
+                        <div class="mov-detalle">
+                            <span class="mov-tipo"><?= ucfirst($mov['tipo']) ?></span> en <span class="mov-cuenta"><?= htmlspecialchars($mov['cuenta']) ?></span>
+                        </div>
+                        <div class="mov-monto">$<?= number_format($mov['monto'], 2, ',', '.') ?></div>
+                        <?php if ($descripcion !== ''): ?>
+                            <div class="mov-desc">(<?= htmlspecialchars($descripcion) ?>)</div>
+                        <?php endif; ?>
+                    </div>
                 <?php endforeach; ?>
-            </ul>
-        </div>
-
-        <!-- Tarjeta de metas -->
-        <div class="card">
-            <?php if ($meta): ?>
-                <h4>Meta de ahorro activa: <?= htmlspecialchars($meta['nombre_meta']) ?></h4>
-                <p>Progreso: $<?= number_format($meta['monto_actual'], 2, ',', '.') ?> / $<?= number_format($meta['monto_meta'], 2, ',', '.') ?></p>
-            <?php else: ?>
-                <p>No tienes metas de ahorro activas.</p>
-            <?php endif; ?>
-        </div>
-
-        <!-- Formularios -->
-        <div class="card formulario">
+            </div>
             <?php include __DIR__ . '/../componentes/formulario_movimiento.php'; ?>
-            <?php include __DIR__ . '/../componentes/formulario_categoria.php'; ?>
-            <?php include __DIR__ . '/../componentes/formulario_cuenta.php'; ?>
+            <button onclick="document.getElementById('modalMovimientos').style.display='flex'" class="btn" style="margin-top: 10px;">
+                📅 Ver más movimientos
+            </button>
+
+            <?php include __DIR__ . '/../componentes/modal_movimientos_mes.php'; ?>
         </div>
     </div>
 </body>

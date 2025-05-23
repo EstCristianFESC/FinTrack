@@ -10,7 +10,7 @@
 <body>
 
 <!-- Botón para abrir el modal -->
-<button onclick="document.getElementById('modalMovimiento').style.display='flex'" class="btn" style="margin: 20px; padding: 10px 20px;">
+<button onclick="document.getElementById('modalMovimiento').style.display='flex'" class="btn" style="margin: 10px; padding: 10px 20px;">
     ➕ Registrar movimiento
 </button>
 

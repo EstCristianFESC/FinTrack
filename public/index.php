@@ -83,12 +83,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- Formulario de login -->
         <div id="loginForm" class="container">
+        <div class="logo-wrapper">
+            <img src="../assets/img/logo.png" alt="FinTrack" class="logo-fintrack">
+        </div>
         <h3>Iniciar sesión</h3>
         <form method="POST" action="">
-            <label for="emailLogin">Correo:</label>
-            <input type="email" name="email" id="emailLogin" required>
-            <label for="passwordLogin">Contraseña:</label>
-            <input type="password" name="password" id="passwordLogin" required>
+            <input type="email" name="email" id="emailLogin" placeholder="Correo electrónico" required>
+            <input type="password" name="password" id="passwordLogin" placeholder="Contraseña" required>
             <button type="submit" name="login">Ingresar</button>
         </form>
         <p>¿No tienes cuenta? <a href="#" id="goToRegister">Regístrate</a></p>
@@ -96,16 +97,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <!-- Formulario de registro -->
         <div id="registerForm" class="container" style="display: none;">
+        <div class="logo-wrapper">
+            <img src="../assets/img/logo.png" alt="FinTrack" class="logo-fintrack">
+        </div>
         <h3>Registro de usuario</h3>
         <form method="POST" action="">
-            <label for="nombre">Nombre:</label>
-            <input type="text" name="nombre" id="nombre" required>
-            <label for="emailRegister">Correo:</label>
-            <input type="email" name="email" id="emailRegister" required>
-            <label for="passwordRegister">Contraseña:</label>
-            <input type="password" name="password" id="passwordRegister" required>
-            <label for="confirmar">Confirmar contraseña:</label>
-            <input type="password" name="confirmar" id="confirmar" required>
+            <input type="text" name="nombre" id="nombre" placeholder="Nombre" required>
+            <input type="email" name="email" id="emailRegister" placeholder="Correo electrónico" required>
+            <input type="password" name="password" id="passwordRegister" placeholder="Contraseña" required>
+            <input type="password" name="confirmar" id="confirmar" placeholder="Confirmar contraseña" required>
             <button type="submit" name="registro">Registrarse</button>
         </form>
         <p>¿Ya tienes cuenta? <a href="#" id="goToLogin">Inicia sesión</a></p>
