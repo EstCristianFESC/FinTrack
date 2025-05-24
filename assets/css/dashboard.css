@@ -377,6 +377,14 @@ header {
     border-left: 4px solid #e74c3c; /* rojo para egreso */
 }
 
+.mov-ajuste {
+    border-left: 4px solid #95a5a6; /* gris para ajustes */
+}
+
+.mov-transferencia {
+    border-left: 4px solid #3498db; /* azul para transferencias */
+}
+
 .cuentas-container {
     display: flex;
     gap: 15px;

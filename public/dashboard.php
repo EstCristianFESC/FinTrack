@@ -6,6 +6,12 @@ require __DIR__ . '/../sql/bd.php';
 $id_usuario = $_SESSION['user_id'];
 
 require __DIR__ . '/../includes/categorias_procesar.php';
+
+// Obtener cuentas del usuario
+$stmt = $pdo->prepare("SELECT id, nombre, saldo_actual FROM cuentas WHERE id_usuario = ?");
+$stmt->execute([$id_usuario]);
+$cuentas = $stmt->fetchAll();
+
 require __DIR__ . '/../includes/ingreso.php';
 require __DIR__ . '/../includes/cuentas_procesar.php';
 
@@ -31,11 +37,6 @@ $totalEgresos = $stmt->fetch()['total'] ?? 0;
 
 // Calcular porcentaje gastado
 $porcentajeGasto = $totalIngresos > 0 ? round(($totalEgresos / $totalIngresos) * 100, 2) : 0;
-
-// Obtener cuentas del usuario
-$stmt = $pdo->prepare("SELECT id, nombre, saldo_actual FROM cuentas WHERE id_usuario = ?");
-$stmt->execute([$id_usuario]);
-$cuentas = $stmt->fetchAll();
 
 // Obtener categorías por tipo
 $categorias = ['ingreso' => [], 'egreso' => []];
@@ -133,6 +134,7 @@ if (isset($_GET['eliminar_cuenta'])) {
         </div>
     </header>
     <!-- CONTENEDOR PRINCIPAL -->
+
     <div class="container">
 
         <!-- Tarjeta resumen financiero -->
@@ -143,6 +145,12 @@ if (isset($_GET['eliminar_cuenta'])) {
             <p><strong>Total egresos:</strong> $<?= number_format($totalEgresos, 2, ',', '.') ?></p>
             <p><strong>Porcentaje Gastado:</strong> <?= $porcentajeGasto ?>%</p>
             <?php include __DIR__ . '/../componentes/formulario_categoria.php'; ?>
+
+            <?php
+                $exePath = realpath(__DIR__ . '/../C++/mensajes.exe');
+                $mensaje = shell_exec("\"$exePath\" 2>&1");
+                echo '<p style="text-align:center; margin-top:10px;"><strong>' . htmlspecialchars($mensaje) . '</strong></p>';
+            ?>
         </div>
 
         <!-- Tarjeta de cuentas -->
@@ -171,7 +179,22 @@ if (isset($_GET['eliminar_cuenta'])) {
                     <?php
                         $fechaFormateada = date('d/m/Y', strtotime($mov['fecha']));
                         $descripcion = trim($mov['descripcion']);
-                        $tipoClase = $mov['tipo'] === 'ingreso' ? 'mov-ingreso' : 'mov-egreso';
+                        switch ($mov['tipo']) {
+                            case 'ingreso':
+                                $tipoClase = 'mov-ingreso';
+                                break;
+                            case 'egreso':
+                                $tipoClase = 'mov-egreso';
+                                break;
+                            case 'ajuste':
+                                $tipoClase = 'mov-ajuste';
+                                break;
+                            case 'transferencia':
+                                $tipoClase = 'mov-transferencia';
+                                break;
+                            default:
+                                $tipoClase = '';
+                        }
                     ?>
                     <div class="movimiento-card <?= $tipoClase ?>">
                         <div class="mov-fecha"><?= $fechaFormateada ?></div>
@@ -193,11 +216,5 @@ if (isset($_GET['eliminar_cuenta'])) {
             <?php include __DIR__ . '/../componentes/modal_movimientos_mes.php'; ?>
         </div>
     </div>
-
-    <?php
-        $exePath = realpath(__DIR__ . '/../C++/mensajes.exe');
-        $mensaje = shell_exec("\"$exePath\" 2>&1");
-        echo '<p style="text-align:center; margin-top:10px;"><strong>' . htmlspecialchars($mensaje) . '</strong></p>';
-    ?>
 </body>
 </html>
