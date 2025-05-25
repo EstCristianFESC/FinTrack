@@ -7,7 +7,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_categoria'])) {
         $stmt = $pdo->prepare("INSERT INTO categorias (id_usuario, nombre, tipo) VALUES (?, ?, ?)");
         $stmt->execute([$id_usuario, $nombre, $tipo]);
         
-        // Redireccionar para evitar reenvío al refrescar
         header("Location: " . $_SERVER['REQUEST_URI']);
         exit();
     } else {

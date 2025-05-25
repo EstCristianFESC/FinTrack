@@ -1,12 +1,9 @@
-<!-- Vincula el CSS de estilos -->
 <link rel="stylesheet" href="../assets/css/componentes.css">
 
-<!-- Botón para abrir modal -->
 <button onclick="document.getElementById('modalCategoria').style.display='flex'" class="btn">
     ➕ Nueva Categoría
 </button>
 
-<!-- Modal Categoría -->
 <div id="modalCategoria" class="modal">
     <div class="modal-content">
         <h3>Nueva Categoría</h3>

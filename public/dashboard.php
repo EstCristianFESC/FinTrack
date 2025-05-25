@@ -46,7 +46,7 @@ foreach (['ingreso', 'egreso'] as $tipo) {
     $categorias[$tipo] = $stmt->fetchAll();
 }
 
-// Obtener últimos 5 movimientos ordenados por ID descendente
+// Obtener últimos 5 movimientos
 $stmt = $pdo->prepare("
     SELECT m.tipo, m.monto, m.descripcion, m.fecha, c.nombre AS cuenta
     FROM movimientos m
@@ -112,7 +112,6 @@ if (isset($_GET['eliminar_cuenta'])) {
     <link rel="stylesheet" href="../assets/css/dashboard.css">
 </head>
 <body>
-    <!-- HEADER -->
     <header>
         <div class="logo">
             <img src="../assets/img/logo.png" alt="FinTrack">
@@ -133,10 +132,8 @@ if (isset($_GET['eliminar_cuenta'])) {
             </div>
         </div>
     </header>
-    <!-- CONTENEDOR PRINCIPAL -->
 
     <div class="container">
-
         <!-- Tarjeta resumen financiero -->
         <div class="card stats">
             <h3>Resumen Financiero</h3>

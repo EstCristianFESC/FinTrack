@@ -53,7 +53,6 @@ if ($anio_seleccionado) {
 }
 ?>
 
-<!-- Estilos en línea rápidos para modal -->
 <style>
 .modal {
     display: none;
@@ -76,7 +75,6 @@ if ($anio_seleccionado) {
 }
 </style>
 
-<!-- Modal de movimientos por mes -->
 <div id="modalMovimientos" class="modal">
     <div class="modal-content">
         <h3>Movimientos por mes y año</h3>
@@ -149,7 +147,7 @@ if ($anio_seleccionado) {
 
 <script>
     function cerrarModal() {
-        const urlLimpia = window.location.pathname; // Quita todos los parámetros
-        window.location.href = urlLimpia; // Redirige completamente
+        const urlLimpia = window.location.pathname;
+        window.location.href = urlLimpia;
     }
 </script>

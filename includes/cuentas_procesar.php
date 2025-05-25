@@ -8,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['crear_cuenta'])) {
         $stmt = $pdo->prepare("INSERT INTO cuentas (id_usuario, nombre, tipo, saldo_actual) VALUES (?, ?, ?, ?)");
         $stmt->execute([$id_usuario, $nombre, $tipo, $saldo]);
 
-        // Redireccionar para evitar reenvío al refrescar
         header("Location: " . $_SERVER['REQUEST_URI']);
         exit();
     } else {

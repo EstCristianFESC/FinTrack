@@ -15,12 +15,10 @@ header("Content-Disposition: attachment; filename=movimientos_{$anio}_{$mes}.csv
 header('Pragma: no-cache');
 header('Expires: 0');
 
-// Separador compatible con Excel en español
 $delimiter = ';';
 
 $output = fopen('php://output', 'w');
 
-// Agregar BOM para que Excel reconozca UTF-8
 fwrite($output, "\xEF\xBB\xBF");
 
 // Encabezados

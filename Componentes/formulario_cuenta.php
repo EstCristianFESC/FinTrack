@@ -1,12 +1,9 @@
-<!-- Vincula el CSS de estilos -->
 <link rel="stylesheet" href="../assets/css/componentes.css">
 
-<!-- Botón para abrir modal -->
 <button onclick="document.getElementById('modalCuenta').style.display='flex'" class="btn" style="margin: 10px;">
     ➕ Nueva Cuenta
 </button>
 
-<!-- Modal Cuenta -->
 <div id="modalCuenta" class="modal">
     <div class="modal-content">
         <h3>Crear nueva cuenta</h3>

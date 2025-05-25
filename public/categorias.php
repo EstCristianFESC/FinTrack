@@ -33,7 +33,6 @@ if (isset($_GET['eliminar'])) {
     }
 }
 
-// Obtener categorías
 $stmt = $pdo->prepare("SELECT * FROM categorias WHERE id_usuario = ? ORDER BY tipo, nombre");
 $stmt->execute([$id_usuario]);
 $categorias = $stmt->fetchAll(PDO::FETCH_GROUP|PDO::FETCH_ASSOC);

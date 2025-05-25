@@ -7,7 +7,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['registrar_movimiento'
     $descripcion = $_POST['descripcion'] ?? '';
     $cuenta_destino = $_POST['cuenta_destino'] ?? null;
 
-    // Validaciones básicas
     if ($tipo === 'transferencia' && count($cuentas) < 2) {
         $mensaje = "No puedes hacer transferencias porque solo tienes una cuenta registrada.";
     } elseif (!is_numeric($monto) || $monto <= 0) {
@@ -75,7 +74,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['registrar_movimiento'
 
             $pdo->commit();
 
-            // Redirigir para evitar doble submit
             header("Location: " . $_SERVER['REQUEST_URI']);
             exit();
 

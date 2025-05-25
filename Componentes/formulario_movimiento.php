@@ -4,19 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Registrar Movimiento</title>
-    <!-- Vincula el CSS -->
     <link rel="stylesheet" href="../assets/css/componentes.css" />
 </head>
 <body>
 
-
-
-<!-- Botón para abrir el modal -->
 <button onclick="document.getElementById('modalMovimiento').style.display='flex'" class="btn" style="margin: 10px; padding: 10px 20px;">
     ➕ Registrar movimiento
 </button>
 
-<!-- Modal -->
 <div id="modalMovimiento" class="modal">
     <div class="modal-content">
         <h3>Nuevo Movimiento</h3>
@@ -67,7 +62,6 @@
     </div>
 </div>
 
-<!-- JS para controlar campos según tipo -->
 <script>
 function toggleCampos() {
     let tipo = document.getElementById("tipoSelect").value;
@@ -119,7 +113,7 @@ function toggleCampos() {
     }
 }
 
-// Esta función deshabilita en cuentaDestino la opción que sea igual a cuentaOrigen
+
 function actualizarCuentaDestino() {
     const cuentaOrigenVal = document.getElementById("cuentaOrigen").value;
     const cuentaDestino = document.getElementById("cuentaDestino");
@@ -128,7 +122,6 @@ function actualizarCuentaDestino() {
         option.disabled = option.value === cuentaOrigenVal;
     }
     
-    // Si la cuenta destino estaba seleccionada y es la misma que la cuenta origen, la cambio
     if (cuentaDestino.value === cuentaOrigenVal) {
         for (let option of cuentaDestino.options) {
             if (!option.disabled) {
@@ -139,18 +132,15 @@ function actualizarCuentaDestino() {
     }
 }
 
-// Actualizo la cuenta destino cuando cambias la cuenta origen y el tipo es transferencia
 document.getElementById("cuentaOrigen").addEventListener("change", () => {
     if (document.getElementById("tipoSelect").value === "transferencia") {
         actualizarCuentaDestino();
     }
 });
 
-// También aseguro que toggleCampos se ejecute al cambiar el tipo
 document.getElementById("tipoSelect").addEventListener("change", toggleCampos);
 
 document.addEventListener("DOMContentLoaded", toggleCampos);
 </script>
-
 </body>
 </html>

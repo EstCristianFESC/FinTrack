@@ -80,7 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         <?php endif; ?>
 
-
         <!-- Formulario de login -->
         <div id="loginForm" class="container">
         <div class="logo-wrapper">
