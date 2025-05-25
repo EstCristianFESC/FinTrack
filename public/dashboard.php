@@ -203,7 +203,7 @@ if (isset($_GET['eliminar_cuenta'])) {
                         </div>
                         <div class="mov-monto">$<?= number_format($mov['monto'], 2, ',', '.') ?></div>
                         <?php if ($descripcion !== ''): ?>
-                            <div class="mov-desc">(<?= htmlspecialchars($descripcion) ?>)</div>
+                            <div class="mov-desc"><?= htmlspecialchars($descripcion) ?></div>
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
