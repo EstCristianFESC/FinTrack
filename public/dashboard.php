@@ -58,11 +58,6 @@ $stmt = $pdo->prepare("
 $stmt->execute([$id_usuario]);
 $movimientos = $stmt->fetchAll();
 
-// Obtener meta de ahorro activa
-$stmt = $pdo->prepare("SELECT * FROM metas_ahorro WHERE id_usuario = ? ORDER BY id DESC LIMIT 1");
-$stmt->execute([$id_usuario]);
-$meta = $stmt->fetch();
-
 // Procesar borrado de cuenta
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['borrar_cuenta'])) {
     // Eliminar movimientos
